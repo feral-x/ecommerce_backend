@@ -1,0 +1,94 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    email    String  @unique
+    password String?
+
+    name     String?
+    picture  String
+    products Product[]
+    reviews  Review[]
+}
+
+model Product {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    title       String
+    description String
+    price       Int
+
+    images String[]
+
+    createdUser User   @relation(fields: [userId], references: [id])
+    userId      String
+
+    categories Category[]
+    color      Color      @relation(fields: [colorId], references: [id])
+    colorId    String
+
+    reviews Review[]
+    Order   Order?   @relation(fields: [orderId], references: [id])
+    orderId String?
+}
+
+model Category {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    title       String
+    description String
+
+    products Product[]
+}
+
+model Color {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    title String
+    value String
+
+    products Product[]
+}
+
+model Review {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    product   Product @relation(fields: [productId], references: [id])
+    productId String
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+}
+
+enum StatusEnum {
+    PENDING
+    PAYED
+    CANCELED
+}
+
+model Order {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    status StatusEnum
+    items  Product[]
+}
