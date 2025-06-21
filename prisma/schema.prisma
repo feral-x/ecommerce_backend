@@ -12,13 +12,13 @@ model User {
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
 
-    email    String  @unique
-    password String?
+    email    String @unique
+    password String
 
-    name     String?
-    picture  String
-    products Product[]
-    reviews  Review[]
+    name    String?
+    picture String?
+    reviews Review[]
+    orders  Order[]
 }
 
 model Product {
@@ -31,9 +31,6 @@ model Product {
     price       Int
 
     images String[]
-
-    createdUser User   @relation(fields: [userId], references: [id])
-    userId      String
 
     categories Category[]
     color      Color      @relation(fields: [colorId], references: [id])
@@ -89,6 +86,9 @@ model Order {
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
 
+    user User @relation(fields: [userId], references: [id])
+
     status StatusEnum
     items  Product[]
+    userId String
 }
