@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsNumber, IsOptional, IsString} from "class-validator";
+import {IsHexColor, IsNotEmpty, IsNumber, IsOptional, IsString} from "class-validator";
 
 export class CreateProductDto {
 	@IsString()
@@ -12,5 +12,6 @@ export class CreateProductDto {
 	quantity:number
 	@IsString()
 	@IsOptional()
+	@IsHexColor()
 	color:string
 }

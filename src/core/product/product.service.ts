@@ -7,7 +7,7 @@ export class ProductService {
 	constructor(private readonly prisma: PrismaService) {}
 	
 	async createProduct(dto: CreateProductDto){
-		return this.prisma.product.create({
+		const product = await this.prisma.product.create({
 			data: {
 				title:  dto.title,
 				price:  dto.price,
@@ -20,7 +20,23 @@ export class ProductService {
 						}
 					]
 				},
+			},
+			include: {
+				inventory: true
 			}
 		})
+		
+		const { inventory, ...rest } = product;
+		
+		return {
+			...rest,
+			inventory: inventory.map((i) => {
+				return {
+					color: i.color,
+					quantity: i.quantity,
+				}
+			}),
+		}
+		
 	}
 }
