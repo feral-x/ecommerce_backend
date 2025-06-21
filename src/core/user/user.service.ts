@@ -58,4 +58,9 @@ export class UserService {
 		
 		return users;
 	}
+	
+	
+	async toggleFavorite(productId: string) {
+	
+	}
 }
