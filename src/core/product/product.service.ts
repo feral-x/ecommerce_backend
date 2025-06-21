@@ -9,7 +9,15 @@ export class ProductService {
 	async createProduct(dto: CreateProductDto){
 		return this.prisma.product.create({
 			data: {
-				...dto
+				...dto,
+				inventory: {
+					create: [
+						{
+							quantity: dto.quantity,
+							color: dto.color,
+						}
+					]
+				},
 			}
 		})
 	}

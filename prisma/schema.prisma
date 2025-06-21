@@ -42,14 +42,12 @@ model Product {
     images String[]
 
     categories Category[]
-    color      Color?     @relation(fields: [colorId], references: [id])
-    colorId    String?
 
     reviews Review[]
 
-    WishListItem WishListItem[]
-    OrderItem    OrderItem[]
-    Inventory    Inventory?
+    wishListItem WishListItem[]
+    orderItem    OrderItem[]
+    inventory    Inventory[]
 }
 
 model Category {
@@ -59,17 +57,6 @@ model Category {
 
     title       String
     description String
-
-    products Product[]
-}
-
-model Color {
-    id        String   @id @default(uuid())
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
-
-    title String
-    value String
 
     products Product[]
 }
@@ -101,7 +88,7 @@ model Order {
 
     user      User        @relation(fields: [userId], references: [id])
     userId    String
-    OrderItem OrderItem[]
+    orderItem OrderItem[]
 }
 
 model WishListItem {
@@ -125,7 +112,8 @@ model OrderItem {
 
 model Inventory {
     id        String  @id @default(uuid())
-    productId String  @unique
+    productId String
     product   Product @relation(fields: [productId], references: [id])
+    color     String?
     quantity  Int
 }
