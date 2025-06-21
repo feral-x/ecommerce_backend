@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {BadRequestException, Injectable, UnauthorizedException} from '@nestjs/common';
 import {PrismaService} from "../prisma/prisma.service";
 import {User} from "@prisma/client";
 import * as argon2 from 'argon2';
@@ -49,18 +49,44 @@ export class UserService {
 	}
 	
 	
-	async GetAllUsers(){
-		const users = await this.prisma.user.findMany({
-			omit: {
-				password: true
-			}
-		})
-		
-		return users;
+	
+	async GetProfile(userId: string) {
+		return this.prisma.user.findUnique({
+				where: {id: userId},
+				omit: {
+					password: true
+				}
+		});
 	}
 	
 	
-	async toggleFavorite(productId: string) {
-	
+	async toggleFavorite(productId: string, userId: string) {
+		const user =  await this.prisma.user.findUnique({
+			where: {
+				id: userId,
+			},
+			include: {
+				wishList: true,
+			}
+		})
+		if(!user) throw new UnauthorizedException();
+
+		const product = await this.prisma.user.findUnique({where: {id: productId}});
+		if(!product) throw new BadRequestException("Product not found");
+		
+		const isExist = user.wishList.find(item => item.id === productId);
+		
+		await this.prisma.user.update({
+			where: {
+				id: userId
+			},
+			data: {
+				wishList: {
+					[isExist ? 'disconnect' : 'connect']: {
+						id: productId,
+					}
+				}
+			}
+		})
 	}
 }

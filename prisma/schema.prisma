@@ -15,10 +15,11 @@ model User {
     email    String @unique
     password String
 
-    name    String?
-    picture String?
-    reviews Review[]
-    orders  Order[]
+    name     String?
+    picture  String?
+    reviews  Review[]
+    orders   Order[]
+    wishList Product[]
 }
 
 model Product {
@@ -39,6 +40,8 @@ model Product {
     reviews Review[]
     Order   Order?   @relation(fields: [orderId], references: [id])
     orderId String?
+    User    User?    @relation(fields: [userId], references: [id])
+    userId  String?
 }
 
 model Category {

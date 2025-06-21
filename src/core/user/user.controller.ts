@@ -2,6 +2,7 @@ import {Body, Controller, Get} from '@nestjs/common';
 import { UserService } from './user.service';
 import {User} from "@prisma/client";
 import {Auth} from "../../utils/decorators/auth.decorator";
+import {UserId} from "../../utils/decorators/GetId";
 
 @Controller('user')
 export class UserController {
@@ -9,8 +10,8 @@ export class UserController {
 	
 	
 	@Auth()
-	@Get('findAll')
-	async GetAllUsers() {
-		return this.userService.GetAllUsers()
+	@Get('profile')
+	async GetAllUsers(@UserId() id:string) {
+		return this.userService.GetProfile(id)
 	}
 }

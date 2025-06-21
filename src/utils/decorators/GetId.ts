@@ -4,11 +4,10 @@ export const UserId = createParamDecorator(
 	(data: unknown, ctx: ExecutionContext) => {
 		const request = ctx.switchToHttp().getRequest();
 		const user = request.user;
-		
-		if (!user || !user.userId) {
+		if (!user || !user.id) {
 			throw new Error('User not found in request');
 		}
 		
-		return user.userId;
+		return user.id;
 	},
 );
