@@ -62,4 +62,17 @@ export class ProductService {
 			}
 		});
 	}
+	
+	async getById(id) {
+		return this.prisma.product.findUnique({
+			where: {
+				id: id,
+			},
+			include: {
+				categories: true,
+				inventory: true,
+				reviews: true,
+			}
+		})
+	}
 }

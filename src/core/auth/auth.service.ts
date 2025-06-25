@@ -49,8 +49,8 @@ export class AuthService {
 			expiresIn: "7d"
 		})
 		
-		res.cookie("token", token, {httpOnly: true})
-		res.cookie("refresh_token", refreshToken, {httpOnly: true})
+		res.cookie("token", token, {httpOnly: true, secure: false, sameSite: "lax"});
+		res.cookie("refresh_token", refreshToken, {httpOnly: true, secure: false, sameSite: "lax"})
 	}
 	
 	refreshTokens(req: Request, res: Response){

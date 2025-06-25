@@ -53,6 +53,9 @@ export class UserService {
 	async GetProfile(userId: string) {
 		return this.prisma.user.findUnique({
 				where: {id: userId},
+				include: {
+					orders: true,
+				},
 				omit: {
 					password: true
 				}
