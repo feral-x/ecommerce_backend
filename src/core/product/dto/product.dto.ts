@@ -1,4 +1,4 @@
-import {IsHexColor, IsNotEmpty, IsNumber, IsOptional, IsString} from "class-validator";
+import {IsArray, IsHexColor, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested} from "class-validator";
 
 export class CreateProductDto {
 	@IsString()
@@ -14,4 +14,9 @@ export class CreateProductDto {
 	@IsOptional()
 	@IsHexColor()
 	color:string
+	@ValidateNested({ each: true })
+	@IsArray()
+	categories: number[]
+	@IsArray()
+	images: Express.Multer.File[]
 }

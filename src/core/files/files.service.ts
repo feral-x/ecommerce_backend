@@ -11,6 +11,9 @@ export class FilesService {
 	}
 	
 	async saveProductImages(files: Express.Multer.File[]) {
+		
+		const result_path: string[] = [];
+		
 		const allowedMimeTypes = ['image/jpg','image/jpeg', 'image/png', 'image/gif'];
 		const uploadDir = join(process.cwd(), 'uploads');
 		
@@ -25,7 +28,9 @@ export class FilesService {
 			const fileName = `${randomName}${ext}`;
 			const fullPath = `${uploadDir}/${fileName}`;
 			await writeFile(fullPath, file.buffer);
-			console.log(fullPath);
+			result_path.push('uploads/' + fileName);
 		}
+		
+		return result_path;
 	}
 }

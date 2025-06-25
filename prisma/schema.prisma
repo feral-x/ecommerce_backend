@@ -51,7 +51,7 @@ model Product {
 }
 
 model Category {
-    id        String   @id @default(uuid())
+    id        Int      @id @default(autoincrement())
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -113,7 +113,7 @@ model OrderItem {
 model Inventory {
     id        String  @id @default(uuid())
     productId String
-    product   Product @relation(fields: [productId], references: [id])
+    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
     color     String?
     quantity  Int
 }

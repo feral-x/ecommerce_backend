@@ -11,7 +11,7 @@ export class AuthService {
 	
 	async login(dto: AuthDto, req: Request, res: Response){
 		const user = await this.userService.GetByEmail(dto.email);
-		if(!user) throw new BadRequestException('Bad data');
+		if(!user) throw new BadRequestException('User not found');
 		const verify = await argon2.verify(user.password, dto.password);
 		if(!verify) throw new BadRequestException('Bad data');
 		this.createTokens(user.id, req, res)
